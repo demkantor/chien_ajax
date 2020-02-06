@@ -2,16 +2,16 @@ $( document ).ready( onReady );
 
 function onReady(){
     console.log( 'JQ' );
-    //get quotes from server on page load
-    
+    $( '#addQuoteButton' ).on( 'click', addQuote );
+    // get quotes from server when page loads
     getQuotes();
 } // end onReady
 
 function addQuote(){
     // get user input and place in an object
     const objectToSend = {
-        who: "abcdef",
-        quote: "xyz"
+        who: $('#whoIn').val(),
+        quote: $('#quoteIn').val()
     };
     // use AJAX to send object to server via a post
     $.ajax({
@@ -29,6 +29,13 @@ function addQuote(){
     })//end ajax
 }//end addQuote
 
+function displayQuotes( quotesArray ){
+    let el = $( '#quotesOut' );
+    el.empty();
+    for( let i=0; i<quotesArray.length; i++){
+        el.append( `<li>"${ quotesArray[i].quote }": ${ quotesArray[i].who }</li>`)
+    }
+} // end displayQuotes
 
 // make a get call to /quotes on server
 function getQuotes(){
@@ -39,6 +46,8 @@ function getQuotes(){
         url: '/quotes'
     }).then(function(response){
         console.log("guess whos back?", response);
+        // lopp through array and append each to DOM
+        displayQuotes(response);
     }).catch(function(err){
         console.log(err);
         alert("error getting quotes. see console for details");

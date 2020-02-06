@@ -29,5 +29,6 @@ app.get( '/quotes', ( req, res )=>{
 
 app.post('/quotes', (req,res)=>{
     console.log("/quotes POST hit", req.body);
+    quotes.push( req.body );
     res.sendStatus(200);
 }) // end /quotes POST
